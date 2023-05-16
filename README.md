@@ -1,2 +1,1 @@
-# EEGEMO
-Real-time wearable EEG-based emotion classification pipeline.
+# Real-time wearable EEG-based emotion classification pipeline.
