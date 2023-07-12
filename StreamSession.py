@@ -12,7 +12,7 @@ class StreamSession:
             if args['device'] == 'c':
                 return CrownLive(args['ip'], 9000, model_a, model_v, window_sec, logger, filename)
             elif args['device'] == 'm':
-                return MuseLive(args['ip'], 5000, model_a, model_v, window_sec, logger, filename)
+                return MuseLive(args['ip'],args['subjectID'], args['sessionName'],5000, model_a, model_v, window_sec, logger, filename)
             else:
                 raise ValueError('Unrecognized value for device. Device can either be Crown or Muse')
         else:

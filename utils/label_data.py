@@ -59,7 +59,7 @@ def read_timestamps(log_path):
 
 
 def find_label(timestamps, ts):
-    for i in range(0, len(timestamps), 2):
+    for i in range(0, len(timestamps)-1, 2):
         if timestamps[i][1] <= ts <= timestamps[i + 1][1]:
             return timestamps[i][0].split("_")[1]
     return "Other"

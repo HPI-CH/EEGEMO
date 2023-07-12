@@ -6,7 +6,7 @@ import pandas as pd
 from datetime import datetime
 from pathlib import Path
 
-MUSE_CHANNELS = ["TP9", "AF7", "AF8", "TP10", "AUX"]
+MUSE_CHANNELS = ["TP9", "AF7", "AF8", "TP10", "AUX1", "AUX2"]
 CROWN_CHANNELS = ["CP3", "C3", "F5", "PO3", "PO4", "F6", "C4", "CP4"]
 
 

@@ -7,7 +7,7 @@ class Muse(Device):
 
     # from mindmonitor FAQs about the OSC channels:
     # https://mind-monitor.com/FAQ.php#oscspec
-    eeg_channels = ["TP9", "AF7", "AF8", "TP10", "AUX"]
+    eeg_channels = ["TP9", "AF7", "AF8", "TP10", "AUX1", "AUX2"]
     sampling_frequency = 256
 
     def __init__(self, ip, port, filename):
