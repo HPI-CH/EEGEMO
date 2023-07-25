@@ -297,7 +297,8 @@ def run_all(dataset, arousal_rate, trial_count, ws, out, keep_model=False, debug
         models = {"Valence": model_v, "Arousal": model_a}
 
     if dataset.name == "My Dataset":
-        rrange = range(3, 14)
+        #rrange = range(3, 14)
+        rrange = range(3, 5)
     else:
         rrange = range(1, dataset.length + 1)
 
@@ -361,27 +362,15 @@ def main():
     args = parse_args()
 
     set_name = args["dataset"]
-    print(set_name)
-    #set_name = 'M'
     subject_id = args["subjectID"]
-    print(subject_id)
-    #subject_id = 10
-    #device = "c"
     device = args["device"]
-    print(device)
-    #dirname = "C:\BachelorThesis\EEGEMO\input"
     dirname = args["input_dir"]
-    print(dirname)
     arousal_rate = args["oversamplingRate"]
-    print(arousal_rate)
     trial_count = args["trialCount"]
     window_seconds = args["window_seconds"]
-    print(window_seconds)
     performanceComp = args["performanceComparison"]
 
     dataset = get_dataset(set_name, dirname, device)
-    print("HERE BE DATASET")
-    print(dataset.out_path)
     logger.info(f"Dataset: {dataset.name}, Window Size: {window_seconds} seconds, "
                 f"Low Arousal sampling rate: {arousal_rate}, Trial Count: {trial_count}")
 
@@ -466,12 +455,13 @@ def main():
     else:
         if subject_id:
             out_path = os.path.join(out_path, str(subject_id))
+            print(out_path)
             df_eeg, df_labels = prepare_single_subject(dataset, subject_id, window_seconds)
             for n in range(trial_count):
                 metrics_overall.append(
                     run_single_subject(dataset, window_seconds, arousal_rate, out_path, df_eeg, df_labels, save=True))
         else:
-            metrics_combined = run_all(dataset, arousal_rate, trial_count, window_seconds, out_path, keep_model=False)
+            metrics_combined = run_all(dataset, arousal_rate, trial_count, window_seconds, out_path, keep_model=True,save=True)
             metrics_overall = [evals for subj in metrics_combined for evals in subj]
 
         # plot overall metric

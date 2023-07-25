@@ -40,8 +40,7 @@ class DeviceLive(Device):
                 for sample_ix in range(required_samples):
                     # make a new random n_channels sample; this is converted into a
                     # pylsl.vectorf (the data type that is expected by push_sample)
-                   # mysample = [self.model_a.predict_one(self.window.x),self.model_v.predict_one(self.window.x)]
-                    mysample = [0,1]
+                    mysample = [self.model_a.predict_one(self.window.x),self.model_v.predict_one(self.window.x)]
                     # now send it
                     outlet.push_sample(mysample)
                     #print(mysample)
