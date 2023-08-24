@@ -66,8 +66,12 @@ class MyData(Dataset):
 
         df_eeg = df_eeg.loc[df_eeg['Label'].str.contains("vid")]
         df_eeg = self.cut_to_window_size(df_eeg, window_sec)
+        df_eeg['Valence'] = df_eeg['Valence'].apply(lambda x: 0.49 if isinstance(x, str) else x)
+        df_eeg['Arousal'] = df_eeg['Arousal'].apply(lambda x: 0.49 if isinstance(x, str) else x)
         df_labels = df_eeg.filter(['Valence', 'Arousal'], axis=1)
         df_eeg.drop(columns=["Valence", "Arousal"], inplace=True)
+       
+
         df_labels['Valence'] = df_labels['Valence'].apply(lambda x: 1 if x >= 0.5 else 0)
         df_labels['Arousal'] = df_labels['Arousal'].apply(lambda x: 1 if x >= 0.5 else 0)
 

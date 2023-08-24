@@ -38,6 +38,10 @@ def parse_args():
     parser.add_argument("subjectID", type=int, help="Subject ID")
     parser.add_argument("device", type=str, help="Device used for collecting the data. Either m(use) or c(rown)",
                         choices=['m', 'c'])
+    parser.add_argument("--modelFileArousal", type=str, help="Path to saved model object if an existing model for "
+                                                             "Arousal should be used")
+    parser.add_argument("--modelFileValence", type=str, help="Path to saved model object if an existing model for "
+                                                             "Valence should be used")
     parser.add_argument("--trialCount", type=int, default=1,
                         help="The amount of times the trials should be run. Default is 1")
     parser.add_argument("--oversamplingRate", type=int,default = 30,
@@ -369,6 +373,15 @@ def main():
     trial_count = args["trialCount"]
     window_seconds = args["window_seconds"]
     performanceComp = args["performanceComparison"]
+    modelArousal = args["modelFileArousal"]
+    modelValence = args["modelFileValence"]
+    if(modelArousal and modelValence):
+        initModels = {
+        'Arousal': load_model(modelArousal),
+        'Valence': load_model(modelValence),
+        }
+  
+
 
     dataset = get_dataset(set_name, dirname, device)
     logger.info(f"Dataset: {dataset.name}, Window Size: {window_seconds} seconds, "
@@ -402,6 +415,11 @@ def main():
                     df_eeg_shuffled, df_labels_shuffled = shuffle_data(df_eeg, df_labels, windows=True,
                                                                        size=dataset.sampling_frequency * window_seconds)
                     model = build_model(dimension, arousal_rate)
+                    """ if dimension == 'Valence' :                        
+                        model = load_model("C:\BachelorThesis\EEGEMO\output_data\mydata\2\Valence\model.sav")
+                    else:
+                        model = load_model("C:\BachelorThesis\EEGEMO\output_data\mydata\2\Arousal\model.sav") """
+                    
                     logger.info(dimension)
                     out_path = make_out_path(out_path, dimension)
                     window = FeatureWindow(window_seconds, dataset.sampling_frequency, dataset.eeg_channels, live=False)
@@ -458,8 +476,12 @@ def main():
             print(out_path)
             df_eeg, df_labels = prepare_single_subject(dataset, subject_id, window_seconds)
             for n in range(trial_count):
-                metrics_overall.append(
-                    run_single_subject(dataset, window_seconds, arousal_rate, out_path, df_eeg, df_labels, save=True))
+                if(modelArousal and modelValence):
+                    metrics_overall.append(
+                    run_single_subject(dataset, window_seconds, arousal_rate, out_path, df_eeg, df_labels, keep_model=True,models=initModels, save=True))
+                else:
+                    metrics_overall.append(
+                    run_single_subject(dataset, window_seconds, arousal_rate, out_path, df_eeg, df_labels,save=True))
         else:
             metrics_combined = run_all(dataset, arousal_rate, trial_count, window_seconds, out_path, keep_model=True,save=True)
             metrics_overall = [evals for subj in metrics_combined for evals in subj]
