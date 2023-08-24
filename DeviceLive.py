@@ -28,7 +28,7 @@ class DeviceLive(Device):
         self.subjID = subjID
         self.sessionName = sessionName
         def streamPredictions(self):
-            info = StreamInfo('EEGEMO', 'EEG', 2, 100, 'int32', 'myuid34234')
+            info = StreamInfo('EEGEMO', 'EEG', 2, 100, 'int32', sessionName)
             # next make an outlet
             outlet = StreamOutlet(info)
             print("now sending data...")
@@ -41,6 +41,7 @@ class DeviceLive(Device):
                     # make a new random n_channels sample; this is converted into a
                     # pylsl.vectorf (the data type that is expected by push_sample)
                     mysample = [self.model_a.predict_one(self.window.x),self.model_v.predict_one(self.window.x)]
+                    #mysample = [0,1]
                     # now send it
                     outlet.push_sample(mysample)
                     #print(mysample)
