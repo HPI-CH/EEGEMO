@@ -15,9 +15,6 @@ def process_csv_file(input_file, labels_dict):
                 valence, arousal = labels_dict[label]
                 row['Valence'] = str(valence)
                 row['Arousal'] = str(arousal)
-            #else:
-            #  row['Valence'] = '0'
-            #  row['Arousal'] = '0'
                 
             # Append the modified row to the list
             modified_rows.append(row)
@@ -31,11 +28,7 @@ def process_csv_file(input_file, labels_dict):
 
     print(f"Processed data saved to: {output_file}")
 
-# Replace 'input.csv' with the path to your input .csv file
-input_file = 'input\modelToChange.csv'
 
-
-# Replace this dictionary with your LabelsDictionary
 labels_dict = {
     'vid10': (0.99, 0.1),
     'vid13': (0.99, 0.1),
@@ -56,4 +49,8 @@ labels_dict = {
     # Add more key-value pairs as needed
 }
 
-process_csv_file(input_file, labels_dict)
+if __name__ == "__main__":
+    # Provide the file path as input
+    input_file = input("Enter the path to file: ")
+    process_csv_file(input_file, labels_dict)
+
